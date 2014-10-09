@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="songs">Songs</string>
+    <string name="completed_songs">Completed</string>
+    <string name="app_name_layout">STEELPAN</string>
     <string name="app_name">Steelpan</string>
-    <string name="challenge">Challenge</string>
-    <string name="buttonMainLayoutStart">Start</string>
+    <string name="challenge">CHALLENGE</string>
+    <string name="buttonMainLayoutStart">START</string>
 
 </resources>

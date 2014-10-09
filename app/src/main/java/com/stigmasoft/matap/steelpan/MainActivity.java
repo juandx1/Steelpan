@@ -29,13 +29,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        inicializarComponentes();
-    }
-
-    public void inicializarComponentes(){
-
-        //Crear la fuente
-        //Typeface tf = Typeface.createFromAsset(getAssets(),"fonts/GhandiSans-Bold.ttf");
+        Typeface tf = Typeface.createFromAsset(getAssets(), "GhandiSans-Bold.ttf");
 
         //Obtener los textview
         textViewAppName = (TextView) findViewById(R.id.textViewAppName);
@@ -51,9 +45,10 @@ public class MainActivity extends Activity {
         });
 
         //Poner fuente textview
-        //textViewAppName.setTypeface(tf);
-        //textViewChallenge.setTypeface(tf);
-    }
+        textViewAppName.setTypeface(tf);
+        textViewChallenge.setTypeface(tf);
+        buttonMainLayoutStart.setTypeface(tf);
 
+    }
 
 }
