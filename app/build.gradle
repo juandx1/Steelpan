@@ -5,7 +5,7 @@ android {
     buildToolsVersion "20.0.0"
 
     defaultConfig {
-        applicationId "com.stigmasoft.matap.steelpan"
+        applicationId "com.stigmasoft.steelpan"
         minSdkVersion 14
         targetSdkVersion 20
         versionCode 1
@@ -21,4 +21,5 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:support-v4:20.0.0'
 }
