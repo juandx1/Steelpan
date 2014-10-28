@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="song_name">18sp</dimen>
+    <dimen name="song_artist">15sp</dimen>
+    <dimen name="song_image">40dp</dimen>
+    <dimen name="app_name">45sp</dimen>
+    <dimen name="app_slogan">25sp</dimen>
+    <dimen name="button_start">25sp</dimen>
+</resources>

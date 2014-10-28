@@ -2,7 +2,6 @@ package com.stigmasoft.matap.steelpan;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -29,15 +28,6 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-
-
-
-        //creo la base de datos modo lec
-        DataBaseHelper dbh = new DataBaseHelper(this);
-
-        //creo la base de datos modo esc
-        SQLiteDatabase db =dbh.getWritableDatabase();
-
 
         Typeface tf = Typeface.createFromAsset(getAssets(), "GhandiSans-Bold.ttf");
 
