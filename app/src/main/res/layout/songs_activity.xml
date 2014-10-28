@@ -9,5 +9,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/listViewSongs"
         android:layout_gravity="right"
-        android:choiceMode="singleChoice" />
+        android:choiceMode="singleChoice"
+        android:listSelector="@color/dark_gray_selected"/>
 </LinearLayout>

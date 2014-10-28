@@ -2,7 +2,8 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/gray">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -13,7 +14,7 @@
         android:layout_centerHorizontal="true"/>
 
     <TextView
-        android:textSize="45sp"
+        android:textSize="@dimen/app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_name_layout"
@@ -21,20 +22,22 @@
         android:layout_marginTop="70dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textColor="@color/dark_gray"/>
 
     <TextView
-        android:textSize="25sp"
+        android:textSize="@dimen/app_slogan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/challenge"
         android:id="@+id/textViewChallenge"
         android:layout_below="@+id/textViewAppName"
         android:layout_centerHorizontal="true"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textColor="@color/dark_gray"/>
 
     <Button
-        android:textSize="25sp"
+        android:textSize="@dimen/button_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/buttonMainLayoutStart"
@@ -44,7 +47,8 @@
         android:paddingRight="25dp"
         android:layout_below="@+id/imageViewLogo"
         style="?android:attr/borderlessButtonStyle"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/dark_gray"/>
 
 
 </RelativeLayout>
