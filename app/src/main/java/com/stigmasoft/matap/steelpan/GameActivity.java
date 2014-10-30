@@ -10,9 +10,16 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+import mundo.FragmentoCancion;
+import mundo.Nota;
 
 /**
  * Created by Juan Manuel on 21/10/2014.
@@ -35,10 +42,23 @@ public class GameActivity extends Activity implements SensorEventListener{
 
     private Sensor senAccelerometer;
 
+    private CountDownTimer timer;
+
+    private FragmentoCancion fragmentoCancion;
+
+    private ArrayList<Nota> notas;
+
+    private int indice = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_layout);
+
+        Bundle bundle = getIntent().getExtras();
+        fragmentoCancion = (FragmentoCancion) bundle.get("fragmento");
+        notas = fragmentoCancion.getListaNotas();
+
 
         senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -59,10 +79,54 @@ public class GameActivity extends Activity implements SensorEventListener{
         acelAnimation = (AnimationDrawable) imageViewLeft.getBackground();
         acelAnimation.start();
 
-        final MediaPlayer mediaPlayerA = MediaPlayer.create(GameActivity.this, R.raw.a1);
+        final MediaPlayer mediaPlayerA = MediaPlayer.create(GameActivity.this, R.raw.a);
         final MediaPlayer mediaPlayerB = MediaPlayer.create(GameActivity.this, R.raw.b);
         final MediaPlayer mediaPlayerC = MediaPlayer.create(GameActivity.this, R.raw.c);
+        final MediaPlayer mediaPlayerCS = MediaPlayer.create(GameActivity.this, R.raw.c_sharp);
+        final MediaPlayer mediaPlayerD = MediaPlayer.create(GameActivity.this, R.raw.d);
+        final MediaPlayer mediaPlayerDS = MediaPlayer.create(GameActivity.this, R.raw.d_sharp);
+        final MediaPlayer mediaPlayerE = MediaPlayer.create(GameActivity.this, R.raw.e);
         final MediaPlayer mediaPlayerF = MediaPlayer.create(GameActivity.this, R.raw.f);
+        final MediaPlayer mediaPlayerFS = MediaPlayer.create(GameActivity.this, R.raw.f_sharp);
+        final MediaPlayer mediaPlayerG = MediaPlayer.create(GameActivity.this, R.raw.g);
+        final MediaPlayer mediaPlayerGS = MediaPlayer.create(GameActivity.this, R.raw.g_sharp);
+
+        timer = new CountDownTimer(fragmentoCancion.getDuracion(),100) {
+            @Override
+            public void onTick(long l) {
+                Nota nota = notas.get(indice);
+                if(nota.getTiempoDeEspera() == l){
+
+                    if(nota.getNota().equals("A"))
+                    {
+                        if(mediaPlayerA.isPlaying()){
+                            mediaPlayerA.pause();
+                            mediaPlayerA.seekTo(0);
+                        }
+                        mediaPlayerA.start();
+                        AnimationDrawable animation = buttonRandom();
+                        animation.setVisible(true, true);
+                        animation.start();
+                    }
+                    if(nota.getNota().equals("B"))
+                    {
+                        if(mediaPlayerB.isPlaying()){
+                            mediaPlayerB.pause();
+                            mediaPlayerB.seekTo(0);
+                        }
+                        mediaPlayerB.start();
+                        AnimationDrawable animation = buttonRandom();
+                        animation.setVisible(true, true);
+                        animation.start();
+                    }
+                }
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        };
 
         buttonUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,6 +184,21 @@ public class GameActivity extends Activity implements SensorEventListener{
                 leftAnimation.start();
             }
         });
+
+    }
+
+    private AnimationDrawable buttonRandom(){
+        Random random = new Random();
+        int numero = random.nextInt(4);
+        if(numero == 0){
+            return upAnimation;
+        }else if(numero == 1){
+            return leftAnimation;
+        }else if(numero == 2){
+            return downAnimation;
+        }else{
+            return rigthAnimation;
+        }
     }
 
     @Override
