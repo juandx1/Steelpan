@@ -44,6 +44,8 @@ public class MainActivity extends Activity {
             }
         });
 
+        AdminBD bd = new AdminBD(this);
+
         //Poner fuente textview
         textViewAppName.setTypeface(tf);
         textViewChallenge.setTypeface(tf);

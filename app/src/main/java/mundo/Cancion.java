@@ -7,19 +7,22 @@ import java.util.ArrayList;
  */
 public class Cancion {
 
-   private String nombreCancion;
-   private String artista;
-   private ArrayList<FragmentoCancion> fragmentos;
+    private String nombreCancion;
+    private String artista;
+    private String imagen;
+    private ArrayList<FragmentoCancion> fragmentos;
 
-
-
-    public Cancion()
-    {
-        fragmentos=new ArrayList<FragmentoCancion>();
+    public String getImagen() {
+        return imagen;
     }
 
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
 
-
+    public Cancion() {
+        fragmentos = new ArrayList<FragmentoCancion>();
+    }
 
     public String getArtista() {
         return artista;
@@ -27,5 +30,21 @@ public class Cancion {
 
     public String getNombreCancion() {
         return nombreCancion;
+    }
+
+    public ArrayList<FragmentoCancion> getFragmentos() {
+        return fragmentos;
+    }
+
+    public void setNombreCancion(String nombreCancion) {
+        this.nombreCancion = nombreCancion;
+    }
+
+    public void setArtista(String artista) {
+        this.artista = artista;
+    }
+
+    public void setFragmentos(ArrayList<FragmentoCancion> fragmentos) {
+        this.fragmentos = fragmentos;
     }
 }
