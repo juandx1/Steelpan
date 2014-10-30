@@ -2,6 +2,7 @@ package com.stigmasoft.matap.steelpan;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -67,6 +68,10 @@ public class GameActivity extends Activity implements SensorEventListener{
             @Override
             public void onClick(View view) {
                 try {
+                    if(mediaPlayerA.isPlaying()){
+                        mediaPlayerA.pause();
+                        mediaPlayerA.seekTo(0);
+                    }
                     mediaPlayerA.start();
                     upAnimation.setVisible(true, true);
                     upAnimation.start();
@@ -80,6 +85,10 @@ public class GameActivity extends Activity implements SensorEventListener{
         buttonDown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(mediaPlayerB.isPlaying()){
+                    mediaPlayerB.pause();
+                    mediaPlayerB.seekTo(0);
+                }
                 mediaPlayerB.start();
                 downAnimation.setVisible(true, true);
                 downAnimation.start();
@@ -89,6 +98,10 @@ public class GameActivity extends Activity implements SensorEventListener{
         buttonRigth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(mediaPlayerC.isPlaying()){
+                    mediaPlayerC.pause();
+                    mediaPlayerC.seekTo(0);
+                }
                 mediaPlayerC.start();
                 rigthAnimation.setVisible(true, true);
                 rigthAnimation.start();
@@ -98,6 +111,10 @@ public class GameActivity extends Activity implements SensorEventListener{
         buttonLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(mediaPlayerF.isPlaying()){
+                    mediaPlayerF.pause();
+                    mediaPlayerF.seekTo(0);
+                }
                 mediaPlayerF.start();
                 leftAnimation.setVisible(true, true);
                 leftAnimation.start();
@@ -122,6 +139,15 @@ public class GameActivity extends Activity implements SensorEventListener{
 
                 if (speed > SENSITIVITY) {
                     acelAnimation.stop();
+
+                    Intent i = new Intent(this,EndActivity.class);
+                    if(false){
+                        i.putExtra("resultado",getString(R.string.nivel_completado));
+                    }else
+                    {
+                        i.putExtra("resultado",getString(R.string.fallaste));
+                    }
+                    startActivity(i);
                 }
 
                 last_x = x;

@@ -7,5 +7,7 @@
     <string name="app_name">Steelpan</string>
     <string name="challenge">CHALLENGE</string>
     <string name="buttonMainLayoutStart">START</string>
+    <string name="fallaste">FALLASTE</string>
+    <string name="nivel_completado">NIVEL COMPLETADO</string>
 
 </resources>
