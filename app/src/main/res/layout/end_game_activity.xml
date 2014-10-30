@@ -14,7 +14,8 @@
         android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
-        android:layout_marginBottom="40dp"/>
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/anim_restart_button"/>
 
     <TextView
         android:layout_width="wrap_content"
