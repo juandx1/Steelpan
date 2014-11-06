@@ -84,6 +84,7 @@
     <!-- Transparencia del dialogo del final del juego -->
     <style name="Theme_Dialog_Translucent" parent="android:Theme.Holo.Dialog.NoActionBar">
         <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowCloseOnTouchOutside">false</item>
     </style>
 
 </resources>

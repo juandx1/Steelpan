@@ -10,7 +10,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -24,31 +24,49 @@ import mundo.Nota;
 /**
  * Created by Juan Manuel on 21/10/2014.
  */
-public class GameActivity extends Activity implements SensorEventListener{
+public class GameActivity extends Activity implements SensorEventListener {
 
     private long lastUpdate = 0;
-
     private float last_x, last_y, last_z;
+    private static final int SENSITIVITY = 1000;
 
-    private static final int SENSITIVITY = 600;
+    private ArrayList<Integer> botones;
 
-    private AnimationDrawable upAnimation,downAnimation,leftAnimation,rigthAnimation, acelAnimation;
+    //Media Players
+    private MediaPlayer mediaPlayerGS;
+    private MediaPlayer mediaPlayerG;
+    private MediaPlayer mediaPlayerFS;
+    private MediaPlayer player;
+    private MediaPlayer mediaPlayerE;
+    private MediaPlayer mediaPlayerDS;
+    private MediaPlayer mediaPlayerD;
+    private MediaPlayer mediaPlayerCS;
+    private MediaPlayer mediaPlayerC;
+    private MediaPlayer mediaPlayerB;
+    private MediaPlayer mediaPlayerA;
+    private MediaPlayer mediaPlayerError;
 
+    //Animaciones
+    private AnimationDrawable upAnimation, downAnimation, leftAnimation, rigthAnimation, acelAnimation;
+
+    //botones
     private ImageButton buttonLeft, buttonUp, buttonRigth, buttonDown;
 
+    //Sensor
     private ImageView imageViewLeft;
 
     private SensorManager senSensorManager;
 
     private Sensor senAccelerometer;
 
+    //....
     private CountDownTimer timer;
 
     private FragmentoCancion fragmentoCancion;
 
     private ArrayList<Nota> notas;
 
-    private int indice = 0;
+    private int indice = 0, contador = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +76,12 @@ public class GameActivity extends Activity implements SensorEventListener{
         Bundle bundle = getIntent().getExtras();
         fragmentoCancion = (FragmentoCancion) bundle.get("fragmento");
         notas = fragmentoCancion.getListaNotas();
-
+        indice = 0;
+        botones = new ArrayList<Integer>();
 
         senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
+        senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 
         buttonLeft = (ImageButton) findViewById(R.id.buttonLeft);
         buttonUp = (ImageButton) findViewById(R.id.buttonUp);
@@ -79,124 +98,211 @@ public class GameActivity extends Activity implements SensorEventListener{
         acelAnimation = (AnimationDrawable) imageViewLeft.getBackground();
         acelAnimation.start();
 
-        final MediaPlayer mediaPlayerA = MediaPlayer.create(GameActivity.this, R.raw.a);
-        final MediaPlayer mediaPlayerB = MediaPlayer.create(GameActivity.this, R.raw.b);
-        final MediaPlayer mediaPlayerC = MediaPlayer.create(GameActivity.this, R.raw.c);
-        final MediaPlayer mediaPlayerCS = MediaPlayer.create(GameActivity.this, R.raw.c_sharp);
-        final MediaPlayer mediaPlayerD = MediaPlayer.create(GameActivity.this, R.raw.d);
-        final MediaPlayer mediaPlayerDS = MediaPlayer.create(GameActivity.this, R.raw.d_sharp);
-        final MediaPlayer mediaPlayerE = MediaPlayer.create(GameActivity.this, R.raw.e);
-        final MediaPlayer mediaPlayerF = MediaPlayer.create(GameActivity.this, R.raw.f);
-        final MediaPlayer mediaPlayerFS = MediaPlayer.create(GameActivity.this, R.raw.f_sharp);
-        final MediaPlayer mediaPlayerG = MediaPlayer.create(GameActivity.this, R.raw.g);
-        final MediaPlayer mediaPlayerGS = MediaPlayer.create(GameActivity.this, R.raw.g_sharp);
+        mediaPlayerA = MediaPlayer.create(GameActivity.this, R.raw.a);
+        mediaPlayerB = MediaPlayer.create(GameActivity.this, R.raw.b);
+        mediaPlayerC = MediaPlayer.create(GameActivity.this, R.raw.c);
+        mediaPlayerCS = MediaPlayer.create(GameActivity.this, R.raw.c_sharp);
+        mediaPlayerD = MediaPlayer.create(GameActivity.this, R.raw.d);
+        mediaPlayerDS = MediaPlayer.create(GameActivity.this, R.raw.d_sharp);
+        mediaPlayerE = MediaPlayer.create(GameActivity.this, R.raw.e);
+        player = MediaPlayer.create(GameActivity.this, R.raw.f);
+        mediaPlayerFS = MediaPlayer.create(GameActivity.this, R.raw.f_sharp);
+        mediaPlayerG = MediaPlayer.create(GameActivity.this, R.raw.g);
+        mediaPlayerGS = MediaPlayer.create(GameActivity.this, R.raw.g_sharp);
+        mediaPlayerError = MediaPlayer.create(GameActivity.this,R.raw.error);
+    }
 
-        timer = new CountDownTimer(fragmentoCancion.getDuracion(),100) {
+    @Override
+    protected void onStart() {
+        super.onStart();
+        timer = new CountDownTimer(fragmentoCancion.getDuracion(), 10) {
             @Override
             public void onTick(long l) {
-                Nota nota = notas.get(indice);
-                if(nota.getTiempoDeEspera() == l){
+                Log.d("tiempo", l + "");
+                Nota notaActual = notas.get(indice);
+                Log.d("notas", notas.size()+"");
+                int numero = numeroRandom();
+                AnimationDrawable animation = animationRandom(numero);
+                MediaPlayer player = darMediaPlayer(notaActual);
+                if (notaActual.getTiempoDeEspera() <= fragmentoCancion.getDuracion() - l) {
 
-                    if(nota.getNota().equals("A"))
-                    {
-                        if(mediaPlayerA.isPlaying()){
-                            mediaPlayerA.pause();
-                            mediaPlayerA.seekTo(0);
-                        }
-                        mediaPlayerA.start();
-                        AnimationDrawable animation = buttonRandom();
-                        animation.setVisible(true, true);
-                        animation.start();
+                    if (player.isPlaying()) {
+                        player.pause();
+                        player.seekTo(0);
                     }
-                    if(nota.getNota().equals("B"))
-                    {
-                        if(mediaPlayerB.isPlaying()){
-                            mediaPlayerB.pause();
-                            mediaPlayerB.seekTo(0);
-                        }
-                        mediaPlayerB.start();
-                        AnimationDrawable animation = buttonRandom();
-                        animation.setVisible(true, true);
-                        animation.start();
-                    }
+                    player.start();
+                    animation.setVisible(true, true);
+                    animation.start();
+                    botones.add(numero);
+                    indice++;
+                    Log.d("indice", indice + "");
+                }
+                if (indice == notas.size()) {
+                    Log.d("entre", "entre");
+                    timer.onFinish();
+                    timer.cancel();
                 }
             }
 
             @Override
             public void onFinish() {
+                buttonUp.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        MediaPlayer player = darMediaPlayer(notas.get(contador));
 
-            }
-        };
+                        upAnimation.setVisible(true, true);
+                        upAnimation.start();
 
-        buttonUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    if(mediaPlayerA.isPlaying()){
-                        mediaPlayerA.pause();
-                        mediaPlayerA.seekTo(0);
+                        if (botones.get(contador) == 0) {
+                            if (player.isPlaying()) {
+                                player.pause();
+                                player.seekTo(0);
+                            }
+                            player.start();
+                            if (contador == botones.size() - 1) {
+                                Intent i = new Intent(GameActivity.this, EndActivity.class);
+                                i.putExtra("fragmento", fragmentoCancion);
+                                i.putExtra("resultado", getString(R.string.nivel_completado));
+                                startActivity(i);
+                            } else {
+                                contador++;
+                            }
+                        } else {
+                            if (mediaPlayerError.isPlaying()) {
+                                mediaPlayerError.pause();
+                                mediaPlayerError.seekTo(0);
+                            }
+                            mediaPlayerError.start();
+                            Intent i = new Intent(GameActivity.this, EndActivity.class);
+                            i.putExtra("fragmento", fragmentoCancion);
+                            i.putExtra("resultado", getString(R.string.fallaste));
+                            startActivity(i);
+                        }
                     }
-                    mediaPlayerA.start();
-                    upAnimation.setVisible(true, true);
-                    upAnimation.start();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                });
+
+                buttonDown.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        MediaPlayer player = darMediaPlayer(notas.get(contador));
+                        downAnimation.setVisible(true, true);
+                        downAnimation.start();
+
+                        if (botones.get(contador) == 2) {
+                            if (player.isPlaying()) {
+                                player.pause();
+                                player.seekTo(0);
+                            }
+                            player.start();
+                            if (contador == botones.size() - 1) {
+                                Intent i = new Intent(GameActivity.this, EndActivity.class);
+                                i.putExtra("fragmento", fragmentoCancion);
+                                i.putExtra("resultado", getString(R.string.nivel_completado));
+                                startActivity(i);
+                            } else {
+                                contador++;
+                            }
+                        } else {
+                            if (mediaPlayerError.isPlaying()) {
+                                mediaPlayerError.pause();
+                                mediaPlayerError.seekTo(0);
+                            }
+                            mediaPlayerError.start();
+                            Intent i = new Intent(GameActivity.this, EndActivity.class);
+                            i.putExtra("fragmento", fragmentoCancion);
+                            i.putExtra("resultado", getString(R.string.fallaste));
+                            startActivity(i);
+                        }
+                    }
+                });
+
+                buttonRigth.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        MediaPlayer player = darMediaPlayer(notas.get(contador));
+                        rigthAnimation.setVisible(true, true);
+                        rigthAnimation.start();
+
+                        if (botones.get(contador) == 3) {
+                            if (player.isPlaying()) {
+                                player.pause();
+                                player.seekTo(0);
+                            }
+                            player.start();
+                            if (contador == botones.size() - 1) {
+                                Intent i = new Intent(GameActivity.this, EndActivity.class);
+                                i.putExtra("fragmento", fragmentoCancion);
+                                i.putExtra("resultado", getString(R.string.nivel_completado));
+                                startActivity(i);
+                            } else {
+                                contador++;
+                            }
+                        } else {
+                            if (mediaPlayerError.isPlaying()) {
+                                mediaPlayerError.pause();
+                                mediaPlayerError.seekTo(0);
+                            }
+                            mediaPlayerError.start();
+                            Intent i = new Intent(GameActivity.this, EndActivity.class);
+                            i.putExtra("fragmento", fragmentoCancion);
+                            i.putExtra("resultado", getString(R.string.fallaste));
+                            startActivity(i);
+                        }
+                    }
+                });
+
+                buttonLeft.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        MediaPlayer player = darMediaPlayer(notas.get(contador));
+                        leftAnimation.setVisible(true, true);
+                        leftAnimation.start();
+                        if (botones.get(contador) == 1) {
+                            if (player.isPlaying()) {
+                                player.pause();
+                                player.seekTo(0);
+                            }
+                            player.start();
+                            if (contador == botones.size() - 1) {
+                                Intent i = new Intent(GameActivity.this, EndActivity.class);
+                                i.putExtra("fragmento", fragmentoCancion);
+                                i.putExtra("resultado", getString(R.string.nivel_completado));
+                                startActivity(i);
+                            } else {
+                                contador++;
+                            }
+                        } else {
+                            if (mediaPlayerError.isPlaying()) {
+                                mediaPlayerError.pause();
+                                mediaPlayerError.seekTo(0);
+                            }
+                            mediaPlayerError.start();
+                            Intent i = new Intent(GameActivity.this, EndActivity.class);
+                            i.putExtra("fragmento", fragmentoCancion);
+                            i.putExtra("resultado", getString(R.string.fallaste));
+                            startActivity(i);
+                        }
+                    }
+                });
 
             }
-        });
-
-        buttonDown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(mediaPlayerB.isPlaying()){
-                    mediaPlayerB.pause();
-                    mediaPlayerB.seekTo(0);
-                }
-                mediaPlayerB.start();
-                downAnimation.setVisible(true, true);
-                downAnimation.start();
-            }
-        });
-
-        buttonRigth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(mediaPlayerC.isPlaying()){
-                    mediaPlayerC.pause();
-                    mediaPlayerC.seekTo(0);
-                }
-                mediaPlayerC.start();
-                rigthAnimation.setVisible(true, true);
-                rigthAnimation.start();
-            }
-        });
-
-        buttonLeft.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(mediaPlayerF.isPlaying()){
-                    mediaPlayerF.pause();
-                    mediaPlayerF.seekTo(0);
-                }
-                mediaPlayerF.start();
-                leftAnimation.setVisible(true, true);
-                leftAnimation.start();
-            }
-        });
-
+        }.start();
     }
 
-    private AnimationDrawable buttonRandom(){
+    private int numeroRandom(){
         Random random = new Random();
-        int numero = random.nextInt(4);
-        if(numero == 0){
+        return random.nextInt(4);
+    }
+
+    private AnimationDrawable animationRandom(int numero) {
+        if (numero == 0) {
             return upAnimation;
-        }else if(numero == 1){
+        } else if (numero == 1) {
             return leftAnimation;
-        }else if(numero == 2){
+        } else if (numero == 2) {
             return downAnimation;
-        }else{
+        } else {
             return rigthAnimation;
         }
     }
@@ -214,19 +320,11 @@ public class GameActivity extends Activity implements SensorEventListener{
             if ((curTime - lastUpdate) > 100) {
                 long diffTime = (curTime - lastUpdate);
                 lastUpdate = curTime;
-                float speed = Math.abs(x + y + z - last_x - last_y - last_z)/ diffTime * 10000;
+                float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
 
                 if (speed > SENSITIVITY) {
                     acelAnimation.stop();
 
-                    Intent i = new Intent(this,EndActivity.class);
-                    if(false){
-                        i.putExtra("resultado",getString(R.string.nivel_completado));
-                    }else
-                    {
-                        i.putExtra("resultado",getString(R.string.fallaste));
-                    }
-                    startActivity(i);
                 }
 
                 last_x = x;
@@ -234,6 +332,33 @@ public class GameActivity extends Activity implements SensorEventListener{
                 last_z = z;
             }
         }
+    }
+
+    public MediaPlayer darMediaPlayer(Nota nota){
+        if (nota.getNota().equals("A")) {
+            return mediaPlayerA;
+        } else if (nota.getNota().equals("B")) {
+            return mediaPlayerB;
+        } else if (nota.getNota().equals("C")) {
+            return mediaPlayerC;
+        } else if (nota.getNota().equals("CS")) {
+            return mediaPlayerCS;
+        } else if (nota.getNota().equals("D")) {
+            return mediaPlayerD;
+        } else if (nota.getNota().equals("DS")) {
+            return mediaPlayerDS;
+        } else if (nota.getNota().equals("E")) {
+            return mediaPlayerE;
+        } else if (nota.getNota().equals("F")) {
+            return player;
+        } else if (nota.getNota().equals("FS")) {
+            return mediaPlayerFS;
+        } else if (nota.getNota().equals("G")) {
+            return mediaPlayerG;
+        } else if (nota.getNota().equals("GS")) {
+            return mediaPlayerGS;
+        }
+        return null;
     }
 
     @Override

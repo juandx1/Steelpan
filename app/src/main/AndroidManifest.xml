@@ -21,7 +21,8 @@
             android:theme="@style/Theme.Steelpan"
             android:icon="@drawable/logo"
             android:label="@string/app_name_layout"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
@@ -30,7 +31,8 @@
             android:theme="@style/Theme_Dialog_Translucent"
             android:icon="@drawable/logo"
             android:label="@string/app_name_layout"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
@@ -39,7 +41,8 @@
             android:theme="@style/Theme.Steelpan"
             android:icon="@drawable/logo"
             android:label="STEELPAN"
-            android:parentActivityName=".SelectActivity">
+            android:parentActivityName=".SelectActivity"
+            android:screenOrientation="portrait">
 
         </activity>
     </application>

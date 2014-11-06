@@ -92,7 +92,7 @@ public class AdminBD {
         fragmento.setDificultad(Integer.parseInt(cursor.getString(1)));
         fragmento.setCompletado(cursor.getString(2).contains("true"));
         fragmento.setDuracion(cursor.getInt(3));
-        fragmento.setListaNotas(notasFragmento(cursor.getString(0),cursor.getString(3)));
+        fragmento.setListaNotas(notasFragmento(cursor.getString(0),cursor.getString(4)));
         return fragmento;
     }
 
@@ -111,8 +111,11 @@ public class AdminBD {
 
     private Nota cursorToNota(Cursor cursor) {
         Nota nota = new Nota();
+        nota.setId_nota(cursor.getString(0));
         nota.setNota(cursor.getString(1));
-        nota.setTiempoDeEspera(Integer.parseInt(cursor.getString(3)));
+        nota.setTiempoDeEspera(cursor.getInt(2));
+        nota.setId_fragmento(cursor.getString(3));
+        nota.setId_cancion(cursor.getString(4));
         return nota;
     }
 
