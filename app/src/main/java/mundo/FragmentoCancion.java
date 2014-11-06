@@ -1,11 +1,12 @@
 package mundo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Usuario on 09/10/2014.
  */
-public class FragmentoCancion {
+public class FragmentoCancion implements Serializable{
 
     private String id_fragmento;
     private String id_cancion;

@@ -44,7 +44,7 @@ public class SongsIncompleteActivity extends Fragment {
                 FragmentoCancion fragmento = fragmentos.get(j);
                 if (!fragmento.isCompletado()) {
                     int id = getResources().getIdentifier(cancion.getImagen(), "drawable", getActivity().getPackageName());
-                    myStringArray1.add(new String[]{cancion.getNombreCancion() + fragmento.getId_fragmento(), cancion.getArtista(), id+""});
+                    myStringArray1.add(new String[]{cancion.getNombreCancion() +" - "+ fragmento.getId_fragmento(), cancion.getArtista(), id+""});
                 }
             }
         }
@@ -57,7 +57,23 @@ public class SongsIncompleteActivity extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view,
                                     int position, long id) {
+                String[] selected = adapter.getItem(position);
+                ArrayList<Cancion> canciones = steelpan.getCanciones();
+                Cancion cancion = null;
+                for(int i = 0; i<canciones.size() && cancion==null; i++)
+                {
+                    if(canciones.get(i).getNombreCancion().equals(selected[0].split("-")[0].trim()))
+                        cancion = canciones.get(i);
+                }
+                ArrayList<FragmentoCancion> fragmentos = cancion.getFragmentos();
+                FragmentoCancion fragmentoCancion = null;
+                for (int i=0; i<fragmentos.size() && fragmentoCancion ==null; i++){
+                    if(fragmentos.get(i).getId_fragmento().equals(selected[0].split("-")[1].trim()))
+                        fragmentoCancion = fragmentos.get(i);
+                }
+
                 Intent intent = new Intent(getActivity(), GameActivity.class);
+                intent.putExtra("fragmento", fragmentoCancion);
                 startActivity(intent);
             }
 

@@ -20,7 +20,7 @@ public class CustomAdapter extends ArrayAdapter<String[]> {
     private final Context context;
     private final ArrayList<String[]> values;
 
-    public CustomAdapter(Context context,ArrayList<String[]> objects) {
+    public CustomAdapter(Context context, ArrayList<String[]> objects) {
         super(context, R.layout.row_list_view, objects);
         this.context = context;
         this.values = objects;

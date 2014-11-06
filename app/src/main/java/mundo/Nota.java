@@ -1,14 +1,16 @@
 package mundo;
 
+import java.io.Serializable;
+
 /**
  * Created by Usuario on 09/10/2014.
  */
-public class Nota {
+public class Nota implements Serializable{
 
     private String id_cancion;
     private String id_fragmento;
     private String id_nota;
-    private int tiempoDeEspera;
+    private long tiempoDeEspera;
     private String nota;
 
     public Nota(){
@@ -39,7 +41,7 @@ public class Nota {
         this.id_nota = id_nota;
     }
 
-    public int getTiempoDeEspera() {
+    public long getTiempoDeEspera() {
         return tiempoDeEspera;
     }
 
@@ -47,7 +49,7 @@ public class Nota {
         return nota;
     }
 
-    public void setTiempoDeEspera(int tiempoDeEspera) {
+    public void setTiempoDeEspera(long tiempoDeEspera) {
         this.tiempoDeEspera = tiempoDeEspera;
     }
 
